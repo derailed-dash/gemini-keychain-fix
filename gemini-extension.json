@@ -1,0 +1,7 @@
+{
+  "name": "wsl-keychain-fix",
+  "version": "1.0.0",
+  "description": "Fixes 'Keychain is not available' errors in WSL, Docker, and other headless Linux environments for both nlm (Python) and Gemini CLI (Node.js) tools.",
+  "author": "derailed-dash",
+  "skills": ["skills/wsl-keychain-fix/SKILL.md"]
+}
