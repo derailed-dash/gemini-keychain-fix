@@ -1,4 +1,4 @@
-# Gemini CLI Extension: WSL Keychain Fix
+# Gemini CLI Extension: Keychain Fix
 
 This extension fixes "Keychain is not available" errors when running Gemini CLI or NotebookLM (`nlm`) in headless Linux environments like WSL (Ubuntu), Docker containers, or remote SSH sessions.
 
@@ -13,11 +13,11 @@ While the files are protected by standard Linux file permissions (readable only 
 Install directly via URL (once published):
 
 ```bash
-gemini extensions install https://github.com/derailed-dash/gemini-skill-wsl-keychain-fix
+gemini extensions install https://github.com/derailed-dash/keychain-fix
 ```
 
-After installation, the agent will have the **`wsl-keychain-fix`** skill active. If you encounter a "Keychain is not available" error, simply ask the agent to fix it, and it will use the skill to configure the correct backends.
+After installation, the agent will have the **`keychain-fix`** skill active. If you encounter a "Keychain is not available" error, simply ask the agent to fix it, and it will use the skill to configure the correct backends.
 
 ## Contents
-*   **wsl-keychain-fix skill:** Procedural expertise for configuring Python (`keyrings.alt`) and Node.js (`.env`) backends.
+*   **keychain-fix skill:** Procedural expertise for configuring Python (`keyrings.alt`) and Node.js (`.env`) backends.
 *   **Auto-fix capability:** The agent can now automatically diagnose and repair these issues in your environment.
