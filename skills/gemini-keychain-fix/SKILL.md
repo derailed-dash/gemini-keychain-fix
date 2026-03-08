@@ -1,9 +1,9 @@
 ---
-name: keychain-fix
+name: gemini-keychain-fix
 description: Fixes "Keychain is not available" errors in WSL, Docker, SSH, and other headless Linux environments. Configures plaintext backends for both Python-based (keyrings.alt) and Node-based (Gemini extensions) tools to bypass missing Secret Service/Gnome Keyring daemons.
 ---
 
-# Keychain Fix
+# Gemini Keychain Fix
 
 This skill addresses the common "Keychain is not available" error encountered when running developer tools in WSL (Windows Subsystem for Linux), Docker containers, or remote SSH sessions.
 
