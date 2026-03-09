@@ -46,27 +46,39 @@ chmod 700 ~/.local/share/python_keyring/ 2>/dev/null || true
 
 ### 2. For Node-based Gemini CLI Extensions
 
-If an extension install fails because of a "sensitive" setting (like an API Key):
+If an extension install fails because of a "sensitive" setting (like an API Key), follow these steps to bypass the keychain requirement:
 
-1. Manually clone the extension to `~/.gemini/extensions/<name>`.
-2. Edit `gemini-extension.json` and change `"sensitive": true` to `"sensitive": false` for the problematic setting.
-3. Manually create the extension's `.env` file at `~/.gemini/extensions/<name>/.env`.
-4. **CRITICAL:** Run `chmod 600 ~/.gemini/extensions/<name>/.env` immediately.
-5. Run `gemini extensions link ~/.gemini/extensions/<name>`.
+1.  **Clear Metadata:** Run `gemini extensions uninstall <name>` to remove any partial or failed installation entries from the registry. ALWAYS CHECK BEFORE DOING THIS.
+2.  **Clone to Safe Location:** Manually clone the extension to a location **outside** of `~/.gemini/extensions/` (e.g., `~/localdev/<name>`). This prevents accidental deletion by the CLI's uninstall command.
+3.  **Disable "Sensitive" Flag:** Flip the sensitive setting in `gemini-extension.json` using this one-liner:
+    ```bash
+    sed -i 's/"sensitive": true/"sensitive": false/g' gemini-extension.json
+    ```
+4.  **Create Plaintext .env:** Create the extension's `.env` file and set strict permissions:
+    ```bash
+    echo "SETTING_NAME=your_secret_here" > .env
+    chmod 600 .env
+    ```
+5.  **Link Extension:** Run `gemini extensions link .` from within the extension directory.
+6.  **Configure Interactive Settings:** If the CLI still prompts for the secret during linking, pipe the value to the config command:
+    ```bash
+    printf "your_secret_here\n" | gemini extensions config <name> "Setting Name"
+    ```
 
-### 3. Global Environment Variable
+## Verification
 
-Add this to `~/.bashrc` to force file storage globally where supported by the CLI:
+To confirm the fix has been applied correctly:
 
-```bash
-export GEMINI_FORCE_FILE_STORAGE=true
-```
+1.  Run `gemini extensions list`.
+2.  Verify the extension is **Enabled**.
+3.  Ensure the **Path** points to your manual directory.
+4.  Ensure the **Source** type is **link**.
 
 ## Reverting the Fix
 
 To return to the default (secure) behavior and clean up plaintext files:
 
-1. Delete the configuration: `rm ~/.config/python_keyring/keyringrc.cfg`
-2. Delete stored secrets: `rm -rf ~/.local/share/python_keyring/`
-3. Remove the environment variable from `~/.bashrc`.
-4. For extensions, revert the `sensitive` flag and delete the local `.env` files.
+1.  **Python Backend:** Delete the configuration: `rm ~/.config/python_keyring/keyringrc.cfg` and stored secrets: `rm -rf ~/.local/share/python_keyring/`.
+2.  **Unlink Extension:** Run `gemini extensions uninstall <name>` to remove the link.
+3.  **Delete Manual Extension:** Manually delete the external directory you created (e.g., `rm -rf ~/localdev/<name>`). ALWAYS CHECK BEFORE DOING THIS.
+4.  **Cleanup Environment:** Remove the `GEMINI_FORCE_FILE_STORAGE` environment variable from `~/.bashrc`.
